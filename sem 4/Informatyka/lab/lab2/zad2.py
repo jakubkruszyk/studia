@@ -18,16 +18,19 @@ class School:
         self.teachers = []
         self.courses = []
         self.students = []
-        t_num = input("Podaj liczbę nauczycieli: ")
-        for i in range(int(t_num)):
+        num = input("Podaj liczbę nauczycieli: ")
+        num = int(num) if num.isnumeric() else 0
+        for i in range(num):
             self.teachers.append(Teacher())
 
-        c_num = input("Podaj liczbę kursów: ")
-        for i in range(int(c_num)):
+        num = input("Podaj liczbę kursów: ")
+        num = int(num) if num.isnumeric() else 0
+        for i in range(num):
             self.courses.append(Course(self.teachers))
 
-        s_num = input("Podaj liczbę studentów: ")
-        for i in range(int(s_num)):
+        num = input("Podaj liczbę studentów: ")
+        num = int(num) if num.isnumeric() else 0
+        for i in range(num):
             self.students.append(Student(self.courses))
 
     def __repr__(self):
@@ -51,10 +54,12 @@ class Course:
         self.semester = input("Podaj semestr: ")
         self.students = []
         pesel = input("Podaj pesel nauczyciela: ")
-        for teacher in teachers:
-            if teacher.pesel == pesel:
-                teacher.courses.append(self)
-                self.teacher = teacher
+        teacher = [t for t in teachers if t.pesel == pesel][0]
+        if teacher:
+            teacher[0].courses.append(self)
+            self.teacher = teacher[0]
+        else:
+            print("Nie znaleziono nauczyciela z danym numerem pesel")
 
     def __repr__(self):
         return f"{self.name}, semester: {self.semester}, teacher: {self.teacher}"
@@ -67,9 +72,10 @@ class Student:
         self.semester = input("Podaj semestr: ")
         self.courses = []
         num = input("Podaj liczbę kursów: ")
-        if int(num) > len(courses):
+        num = int(num) if num.isnumeric() else 0
+        if num > len(courses):
             num = len(courses)
-        for i in range(int(num)):
+        for i in range(num):
             name = input("Podaj nazwę kursu: ")
             course = [c for c in courses if c.name == name]
             if course:
