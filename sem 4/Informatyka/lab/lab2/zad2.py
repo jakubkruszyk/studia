@@ -1,3 +1,5 @@
+from datetime import datetime
+
 # Klasa szkoła
 # konstruktor - Nazwa, adres,
 # listy - nauczyciele, kursy, studenci
@@ -10,6 +12,7 @@
 
 # Klasa student
 # pesel, email, semestr, kursy[]
+
 
 class School:
     def __init__(self):
@@ -55,7 +58,9 @@ class School:
             print("Nie znaleziono kursów dla danego semestru")
 
     def print_students_age(self):
-        pass
+        students_sorted = sorted(self.students, key=lambda s: s.birth_date().timestamp(), reverse=True)
+        for student in students_sorted:
+            print(student)
 
     def add_student(self):
         self.students.append(Student(self.courses))
@@ -152,6 +157,21 @@ class Student:
                 average_list[course] = 0
         return average_list
 
+    def birth_date(self):  # 19xx 01 - 12   20xx 21 - 32    21xx 41 - 52
+        year = int(self.pesel[0:2])
+        month = int(self.pesel[2:4])
+        day = int(self.pesel[4:6])
+        if 0 < month < 13:
+            year = 1900 + year
+        elif 20 < month < 33:
+            year = 2000 + year
+            month = month - 20
+        else:
+            year = 2100 + year
+            month = month - 40
+        date = datetime(year, month, day)
+        return date
+
 
 nowa = School()
 nowa.print_students()
@@ -165,3 +185,4 @@ nowa.students[0].add_grade("inf", 4.0)
 nowa.students[0].add_grade("inf", 3.0)
 print(nowa.students[0].average())
 print(nowa.average())
+nowa.print_students_age()
