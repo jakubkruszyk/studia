@@ -157,6 +157,12 @@ class Student:
                 average_list[course] = 0
         return average_list
 
+    def semester_average(self):
+        grades_sum = [sum(c) for c in self.grades.values()]
+        grades_num = [len(c) for c in self.grades.values()]
+        avr = sum(grades_sum) / sum(grades_num)
+        return avr
+
     def birth_date(self):  # 19xx 01 - 12   20xx 21 - 32    21xx 41 - 52
         year = int(self.pesel[0:2])
         month = int(self.pesel[2:4])
@@ -186,3 +192,4 @@ nowa.students[0].add_grade("inf", 3.0)
 print(nowa.students[0].average())
 print(nowa.average())
 nowa.print_students_age()
+nowa.students[0].semester_average()
