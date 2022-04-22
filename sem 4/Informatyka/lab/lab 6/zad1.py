@@ -8,6 +8,7 @@
 
 from web import get_data
 from database import read_database, write_database
+from plot import plot_data
 
 AUTH_KEY = "ffb77367178d4d3a864113735221904"
 DATABASE_PATH = "database.txt"
@@ -41,11 +42,13 @@ while True:
             filtered_data = [True for record in file_content[city]
                              if record["timestamp"] == response['data'][0]['timestamp']]
             if len(filtered_data) == 0:
-                file_content[city].append(response['data'])
+                file_content[city].extend(response['data'])
         write_database(DATABASE_PATH, file_content)
 
     elif option == "2":  # preview
-        write_database(DATABASE_PATH, {})
+        city = input("Podaj miasto: ")
+        data = read_database(DATABASE_PATH)[city]
+        plot_data(data, 't')
 
     elif option == "3":  # exit
         break

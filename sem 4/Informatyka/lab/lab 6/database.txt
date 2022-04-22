@@ -1,1 +1,1 @@
-{"Paris": [{"timestamp": 1650375000, "temperature": 17.0, "humidity": 55, "pressure": 1013.0}]}
+{"Paris": [{"timestamp": 1650375000, "temperature": 17.0, "humidity": 55, "pressure": 1013.0}, {"timestamp": 1650540600, "temperature": 18.0, "humidity": 37, "pressure": 1008.0}, {"timestamp": 1650541500, "temperature": 18.0, "humidity": 37, "pressure": 1008.0}], "London": [{"timestamp": 1650540600, "temperature": 17.0, "humidity": 48, "pressure": 1012.0}]}
