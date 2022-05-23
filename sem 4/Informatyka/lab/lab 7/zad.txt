@@ -1,1 +1,32 @@
-ogarnąć mysql - query, serwer itd.
+zainstalować mysql https://dev.mysql.com/downloads/file/?id=511553
+
+dwie tabele
+
+cars
+- id
+- color
+- marka
+- model
+- pojemnosc
+- rocznik
+- owner_id (klucz z owner)
+
+owners
+- id
+- imie
+- nazwisko
+- pesel
+- kraj
+
+SQL
+
+SELECT (...) FROM (TAB)
+INSERT INTO (TAB) VALUES(...)
+DELETE FROM (TAB)
+UPDATE (TAB) SET X=Y
+
+ZADANIE DOMOWE
+dla każdej tabeli klasa w pythonie
+metody:
+all() -> execute SELECT * FROM ?, zrobić listę obiektów z recordów (statyczna)
+save() -> po aktualizacji wartości zrobić UPDATE CAR SET ... (niestatyczna)(może być potrzebny commit())
