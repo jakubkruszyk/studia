@@ -37,13 +37,13 @@ class Car:
         cur = con.cursor()
         query = f"UPDATE cars SET " \
                 f"car_id = {self.car_id}, " \
-                f"kolor = {self.kolor}, " \
-                f"marka = {self.marka}, " \
-                f"model = {self.model}, " \
-                f"pojemnosc = {self.pojemnosc}, " \
-                f"rocznik = {self.rocznik}, " \
-                f"owner_id = {self.owner_id}" \
-                f"WHERE car_id = {self.car_id}"
+                f"kolor = '{self.kolor}', " \
+                f"marka = '{self.marka}', " \
+                f"model = '{self.model}', " \
+                f"pojemnosc = '{self.pojemnosc}', " \
+                f"rocznik = '{self.rocznik}', " \
+                f"owner_id = '{self.owner_id}'" \
+                f"WHERE (car_id = {self.car_id})"
         cur.execute(query)
         con.commit()
         cur.close()
@@ -72,12 +72,13 @@ class Owner:
     def save(self, con):
         cur = con.cursor()
         query = f"UPDATE owners SET " \
-                f"owner_id = '{self.owner_id}', " \
+                f"owner_id = {self.owner_id}, " \
                 f"imie = '{self.imie}', " \
                 f"nazwisko = '{self.nazwisko}', " \
                 f"pesel = '{self.pesel}', " \
-                f"kraj = '{self.kraj}', " \
-                f"WHERE owner_id = '{self.owner_id}'"
+                f"kraj = '{self.kraj}' " \
+                f"WHERE (owner_id = {self.owner_id})"
+        print(query)
         cur.execute(query)
         con.commit()
         cur.close()
