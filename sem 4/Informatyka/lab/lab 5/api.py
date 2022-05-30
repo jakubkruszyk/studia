@@ -1,5 +1,6 @@
 import requests
 import json
+from datetime import datetime
 
 
 def get_api(currency: str, date: list, table=False) -> dict:
@@ -12,18 +13,20 @@ def get_api(currency: str, date: list, table=False) -> dict:
 
     # request do NBP
     resp = requests.get(url)
-    data = resp.json() if resp.status_code == 200 else "Not found - probably invalid date"
-    return data
+    if resp.status_code == 200:
+        data = resp.json()
+    else:
+        return {"error": "Not found - probably invalid date"}
+
+    data_parsed = {'date': data['rates'][0]['effectiveDate'],
+                   'bid': data['rates'][0]['bid'],
+                   'ask': data['rates'][0]['ask']}
+    return data_parsed
 
 
-def get_file(path: str, currency: str, date: list):
+def get_file(path: str) -> dict:
     with open(path) as file:
         content = json.load(file)
-        if content['code'] != currency.upper():
-            return "Invalid currency code"
-        rates = content['rates'][0]
-        if rates['effectiveDate'] != date:
-            return "Invalid date"
         return content
 
 
@@ -34,7 +37,16 @@ def write_file(path: str, data: dict) -> None:
 
 
 def parse_data(data: dict) -> str:
-    bid = data['rates'][0]['bid']
-    ask = data['rates'][0]['ask']
-    date = data['rates'][0]['effectiveDate']
-    return f"{date} - bid: {bid}, ask: {ask}"
+    error = data.get('error')
+    if error is not None:
+        return f"error: {error}"
+    else:
+        return f"{data['date']} - bid: {data['bid']}, ask: {data['ask']}"
+
+
+def sort_content(data: list) -> list:
+    def fun(x: dict):
+        return datetime.strptime(x['date'], "%Y-%m-%d").timestamp()
+
+    sorted_data = sorted(data, key=fun)
+    return sorted_data
