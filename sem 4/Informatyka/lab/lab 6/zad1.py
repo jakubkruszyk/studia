@@ -25,30 +25,43 @@ while True:
         if response.get("error") is not None:
             print(response["error"])
             break
-        response = {
-            'localization': (response['location']['name'], (response['location']['lat'], response['location']['lon'])),
-            'data': [{'timestamp': response['current']['last_updated_epoch'],
-                      'temperature': response['current']['temp_c'],
-                      'humidity': response['current']['humidity'],
-                      'pressure': response['current']['pressure_mb']
-                      }]
+
+        city = response['location']['name']
+        response_parsed = {
+            'localization': (response['location']['lat'], response['location']['lon']),
+            'records': [{'date': response['forecast']['forecastday'][0]['date'],
+                        'data': [{'hour': record['time'].split(" ")[-1], 'temp': record['temp_c']}
+                                 for record in response['forecast']['forecastday'][0]['hour']
+                                 ]
+                         }]
         }
-        city = response['localization'][0]
+
         # file part ====================================================================================================
         file_content = read_database(DATABASE_PATH)
         if file_content.get(city) is None:  # selected city does not exists in database
-            file_content[city] = response['data']  # simply add response as it is
-        else:  # selected city exists in database, check for timestamp and add if necessary
-            filtered_data = [True for record in file_content[city]
-                             if record["timestamp"] == response['data'][0]['timestamp']]
+            file_content[city] = response_parsed  # simply add response as it is
+        else:  # selected city exists in database, check for date and add if necessary
+            filtered_data = [True for record in file_content[city]['records']
+                             if record["date"] == response_parsed['records'][0]['date']]
             if len(filtered_data) == 0:
-                file_content[city].extend(response['data'])
+                file_content[city].extend(response_parsed['records'])
+                continue
         write_database(DATABASE_PATH, file_content)
 
     elif option == "2":  # preview
         city = input("Podaj miasto: ")
-        data = read_database(DATABASE_PATH)[city]
-        plot_data(data, 't')
+        date = input("Podaj datę (yyyy-mm-dd): ")
+        data = read_database(DATABASE_PATH)
+        city_data = data.get(city)
+        if city_data is None:  # check if city is in database
+            print(f"Brak miasta {city} w bazie")
+            continue
+        records = city_data['records']
+        filtered_records = [record for record in records if record['date'] == date][0]
+        if not filtered_records:  # check for record with specific date
+            print(f"Brak danych dla daty {date}, dla miasta {city} w bazie")
+            continue
+        plot_data(filtered_records['data'], city, date)
 
     elif option == "3":  # exit
         break

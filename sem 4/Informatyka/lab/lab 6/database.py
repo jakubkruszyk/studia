@@ -1,13 +1,5 @@
 import json
 
-# struktura pliku - json
-# {
-#   "nazwa miasta": [
-#                       { dane }
-#                       { kolejne dane }
-#                   ]
-#   " kolejne miasto": [ ... ]
-
 
 def read_database(path: str) -> dict:
     with open(path) as file:
