@@ -49,10 +49,23 @@ while True:
         write_database(DATABASE_PATH, file_content)
 
     elif option == "2":  # preview
-        city = input("Podaj miasto: ")
+        city = input("Podaj miasto lub koordynaty(rozdzielone spacją): ")
+        localization = city.replace(",", '.').split(" ")
         date = input("Podaj datę (yyyy-mm-dd): ")
         data = read_database(DATABASE_PATH)
-        city_data = data.get(city)
+
+        if len(localization) == 2:  # coordinates
+            localization = [float(c) for c in localization]
+            city_data = [city for city in data.values() if city['localization'] == localization][0]
+            if not city_data:
+                print("Złe koordynaty")
+                continue
+        elif len(localization) == 1:  # city
+            city_data = data.get(city)
+        else:
+            print("Zła liczba argumentów")
+            continue
+
         if city_data is None:  # check if city is in database
             print(f"Brak miasta {city} w bazie")
             continue
