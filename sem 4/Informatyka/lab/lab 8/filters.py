@@ -1,28 +1,17 @@
 import numpy as np
 
 
-def own_method(one, two):
-    # average = 0
-    # div_sum = 0
-    pixels_num = one.shape[0] * one.shape[1] * 3
-    # for i in range(len(one)):
-    #     for j in range(len(one[i])):
-    #         for k in range(len(one[i][j])):
-    #             div_sum = div_sum + abs(int(one[i][j][k]) - int(two[i][j][k]))
-    # average = div_sum / pixels_num
-
-    sum_1_2 = np.subtract(one, two)
+def own_method(test, reference):
+    pixels_num = test.shape[0] * test.shape[1] * test.shape[2]
+    sum_1_2 = np.subtract(test.astype("float32"), reference.astype("float32"))
     abs_1_2 = np.abs(sum_1_2)
-
-    abs_sum = np.sum(abs_1_2, axis=2)
-    abs_sum = np.sum(abs_sum, axis=1)
-    abs_sum = np.sum(abs_sum)
-
-    average2 = abs_sum / pixels_num
-    # print(average)
-    # print(average2)
-    return average2
+    abs_sum = np.sum(abs_1_2)
+    average = abs_sum / pixels_num
+    return average
 
 
 def avg(x) -> float:
-    return sum(x)/len(x)
+    if x:
+        return sum(x)/len(x)
+    else:
+        return 0
