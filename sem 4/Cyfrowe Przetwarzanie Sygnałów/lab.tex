@@ -151,4 +151,15 @@ Filtr ten nadaje się tylko do sygnałów okresowych. Jest to filtr dolnoprzepus
 \includegraphics[width=15cm]{cav.png}
 \end{center}
 
+\section{Filtry Medianowe}
+Jest to układ nieliniowy - może dodawać nowe składowe do sygnału.\newline
+Filtr bierze fragment ciągu wejściowego o długości N i oblicza medianę z tego fragmentu. Dobrze filtruje krótkie zakłócenia o dużej amplitudzie (wpływające tylko na pojedyncze próbki). Przy bardziej skomplikowanych sygnałach różnica między filtrem medianowym i MAV o tej samej długości jest znacznie mniejsza niż dla pojedynczego sygnału. Połączenie tych dwóch filtrów dobrze kompensuje zniekształcenia pozostawione przez filtr medianowy.
+\begin{center}
+	\includegraphics[width=15cm]{med1.png}
+\end{center}
+
+\begin{center}
+	\includegraphics[width=15cm]{med2.png}
+\end{center}
+
 \end{document}
