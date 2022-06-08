@@ -162,4 +162,15 @@ Filtr bierze fragment ciągu wejściowego o długości N i oblicza medianę z te
 	\includegraphics[width=15cm]{med2.png}
 \end{center}
 
+\section{Filtr Kalmana}
+Filtr bazuje na modelu matematycznym obiektu oraz pomiarach tego obiektu. Stan następny obiektu może być obliczony na podstawie tylko modelu lub pomiaru jednak będzie to obarczone błędem. Żeby go zminimalizować filtr oblicza wynik jedną i drugą metodą i na podstawie równań statystycznych oblicza wagi, z którymi łączy obydwa wyniki.
+
+[tutaj obrazek z wykresem]
+
+Filtr daje  znacznie lepsze wyniki od filtru MAV jednak wymaga dobrego dobrania parametrów oraz dobrego modelu obiektu badanego. Podczas laboratorium zmieniany był parametr "e" wpływający na macierz kowariancji szumu. Zmniejszanie parametru zwiększa dokładność filtracji względem sygnału referencyjnego. Dla większych wartości wynik był zbliżony do filtru MAV (wyjątkiem jest początkowa faza narastania sygnału). Od pewnego momentu dalsze zmniejszanie parametru "e" poprawia dopasowanie do sygnału referencyjnego ale wprowadza offset.
+
+[tutaj wykresy z octave'a]
+
+Od początku odwzorowuje sygnał referencyjny w przeciwieństwie do filtru MAV, który zaczyna od wartości 0.
+
 \end{document}
