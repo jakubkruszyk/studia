@@ -16,14 +16,14 @@
 \maketitle
 
 \section{Efekt Gibbsa}
-Efekt "przerzutów"/ oscylacji w miejscach nieciągłości funkcji odtworzonej za pomocą szeregu Fouriera. Można go zmniejszyć zwiększając liczbę współczynników szeregu jednak nie można go wyeliminować - jego minimalna wartość to około 9\%. 
+Efekt "przerzutów"/ oscylacji w miejscach nieciągłości funkcji odtworzonej za pomocą szeregu Fouriera. Można go zmniejszyć zwiększając liczbę współczynników szeregu jednak nie można go wyeliminować - minimalna wartość "największego przerzutu" to około 9\% wartości skoku w sygnale. 
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=6cm]{gibbs.png}
 \end{figure}
 
-\section{Próbkowanie i odtwarzanie sygnału analogowego}
+\section{Próbkowanie idealne i odtwarzanie sygnału analogowego}
 Próbkowanie sygnału powoduje powstanie kopii jego oryginalnego widma w dziedzinie częstotliwości. Kolejne kopie są przesunięte w dziedzinie częstotliwości o kolejne wielokrotności częstotliwości próbkowania.
 \begin{figure}[h]
     \centering
@@ -31,14 +31,14 @@ Próbkowanie sygnału powoduje powstanie kopii jego oryginalnego widma w dziedzi
 \end{figure}
 
 
-Aby zrekonstruować sygnał należy odfiltrować nadmiarowe kopie filtrem dolnoprzepustowym i obliczyć odwrotną transformatę Fouriera.
+Aby zrekonstruować sygnał należy odfiltrować nadmiarowe kopie filtrem dolnoprzepustowym oraz wzmocnić sygnał. (filtrowanie w dziedzinie czasu - nie potrzebna transformacja Fouriera)
 \begin{figure}[h]
     \centering
     \includegraphics[width=10cm]{sampling2.png}
 \end{figure}
 
 
-Częstotliwość Nyquista - aby poprawnie odtworzyć spróbkowany sygnał częstotliwość próbkowania powinna być większa od dwukrotności najwyższej częstotliwości występującej w sygnale.
+Twierdzenie o próbkowaniu - aby poprawnie odtworzyć spróbkowany sygnał częstotliwość próbkowania powinna być większa od dwukrotności najwyższej częstotliwości występującej w sygnale.
 \[ f_s > 2f_{max} \]
 
 Gdy częstotliwość próbkowania nie spełnia tego warunku powstanie efekt aliasingu - kopie widma zaczną na siebie nachodzić. Efektem będzie niepoprawnie odtworzony sygnał ponieważ jego widmo zostało zniekształcone swoimi kopiami.
@@ -59,7 +59,7 @@ Podstawiając $ e^{st_s} = z $ otrzymujemy:
 \[ y(n) = \sum_{m=0}^{M}b_m U(z)z^{-m} - \sum_{k=1}^{N}a_k Y(z)z^{-k} \]
 \[ H(z) = \frac{\sum_{m=0}^{M}b_m z^{-m}}{1 + \sum_{k=1}^{N}a_k z^{-k}} \]
 
-Zera transmitancji odpowiadają za pasmo zaporowe a bieguny za pasmo przepustowe. Bieguny powinny być wewnątrz okręgu jednostkowego (inaczej układ staje się niestabilny) a zera na okręgu jednostkowym (wartości promienia większe od 1 powodują zniekształcenia sygnału). Bieguny i zera można obliczyć z zależności:
+Zera transmitancji odpowiadają za minima a bieguny za maksima charakterystyki amplitudowej. Bieguny powinny być wewnątrz okręgu jednostkowego (inaczej układ staje się niestabilny) a zera na okręgu jednostkowym (wartości promienia większe od 1 powodują zniekształcenia sygnału). Bieguny i zera można obliczyć z zależności:
 \[ \Omega_z = 2\pi \cdot \left( \frac{f_z}{f_s} \right) \]
 \[ \Omega_p = 2\pi \cdot \left( \frac{f_p}{f_s} \right) \]
 \[ zeros = R_z e^{j\Omega_z} \quad\quad poles = R_p e^{j\Omega_p} \]
@@ -165,12 +165,24 @@ Filtr bierze fragment ciągu wejściowego o długości N i oblicza medianę z te
 \section{Filtr Kalmana}
 Filtr bazuje na modelu matematycznym obiektu oraz pomiarach tego obiektu. Stan następny obiektu może być obliczony na podstawie tylko modelu lub pomiaru jednak będzie to obarczone błędem. Żeby go zminimalizować filtr oblicza wynik jedną i drugą metodą i na podstawie równań statystycznych oblicza wagi, z którymi łączy obydwa wyniki.
 
-[tutaj obrazek z wykresem]
+\begin{center}
+	\includegraphics{kalman3.png}
+\end{center}
 
 Filtr daje  znacznie lepsze wyniki od filtru MAV jednak wymaga dobrego dobrania parametrów oraz dobrego modelu obiektu badanego. Podczas laboratorium zmieniany był parametr "e" wpływający na macierz kowariancji szumu. Zmniejszanie parametru zwiększa dokładność filtracji względem sygnału referencyjnego. Dla większych wartości wynik był zbliżony do filtru MAV (wyjątkiem jest początkowa faza narastania sygnału). Od pewnego momentu dalsze zmniejszanie parametru "e" poprawia dopasowanie do sygnału referencyjnego ale wprowadza offset.
 
-[tutaj wykresy z octave'a]
+\begin{center}
+	\includegraphics[width=15cm]{kalman1.png}
+	
+	n = 0.001
+\end{center}
 
-Od początku odwzorowuje sygnał referencyjny w przeciwieństwie do filtru MAV, który zaczyna od wartości 0.
+\begin{center}
+	\includegraphics[width=15cm]{kalman2.png}
+	
+	n = 0.00001
+\end{center}
+
+Filtr Kalmana od początku odwzorowuje sygnał referencyjny w przeciwieństwie do filtru MAV, który zaczyna od wartości 0.
 
 \end{document}
